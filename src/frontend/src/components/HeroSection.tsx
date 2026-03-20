@@ -1,9 +1,22 @@
 import { motion } from "motion/react";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useState } from "react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
 
 const HeroCar3D = lazy(() => import("./HeroCar3D"));
 
 export default function HeroSection() {
+  const [showPayment, setShowPayment] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const upiId = "9711547192@fam";
+  const upiLink = `upi://pay?pa=${upiId}&pn=GC%20Motors&tn=Pre%20Book%20GC%20Motors`;
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(upiId);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   return (
     <section
       id="home"
@@ -64,18 +77,26 @@ export default function HeroSection() {
             transition={{ delay: 0.9, duration: 0.8 }}
             className="flex flex-wrap gap-4"
           >
+            <button
+              type="button"
+              onClick={() => setShowPayment(true)}
+              className="font-display text-sm font-bold tracking-widest px-8 py-3 rounded-full bg-gold text-background hover:shadow-gold-lg transition-all duration-300 hover:scale-105"
+              data-ocid="hero.prebook_button"
+            >
+              PRE BOOK NOW
+            </button>
             <a
-              href="https://www.tile.dev/web-preview.html?id=b1d751d1-ba53-434d-80ee-2fa4f3c163f2"
+              href="https://bdnorxz5oi.youware.app/"
               target="_blank"
               rel="noopener noreferrer"
-              className="font-display text-sm font-bold tracking-widest px-8 py-3 rounded-full bg-gold text-background hover:shadow-gold-lg transition-all duration-300 hover:scale-105"
-              data-ocid="hero.primary_button"
+              className="font-display text-sm font-bold tracking-widest px-8 py-3 rounded-full border-2 border-gold bg-gold/10 text-gold hover:bg-gold hover:text-background transition-all duration-300 hover:scale-105"
+              data-ocid="hero.buy_dream_button"
             >
-              BUY YOUR CAR
+              BUY YOUR DREAM
             </a>
             <a
               href="#features"
-              className="font-display text-sm font-bold tracking-widest px-8 py-3 rounded-full border border-gold text-gold hover:bg-gold hover:text-background transition-all duration-300"
+              className="font-display text-sm font-bold tracking-widest px-8 py-3 rounded-full border border-gold/50 text-gold/80 hover:bg-gold hover:text-background transition-all duration-300"
               data-ocid="hero.secondary_button"
             >
               EXPLORE FEATURES
@@ -143,6 +164,63 @@ export default function HeroSection() {
           className="w-0.5 h-8 bg-gradient-to-b from-gold to-transparent"
         />
       </motion.div>
+
+      {/* UPI Payment Dialog */}
+      <Dialog open={showPayment} onOpenChange={setShowPayment}>
+        <DialogContent className="bg-[oklch(0.12_0.01_240)] border border-gold/40 max-w-sm">
+          <DialogHeader>
+            <DialogTitle className="font-display text-gold text-center tracking-widest uppercase text-lg">
+              Pre Book GC Motors
+            </DialogTitle>
+          </DialogHeader>
+
+          <div className="flex flex-col items-center gap-5 py-2">
+            <p className="font-body text-sm text-muted-foreground text-center">
+              Pay via UPI to confirm your pre-booking
+            </p>
+
+            {/* UPI QR Image */}
+            <div className="border-2 border-gold/50 rounded-xl overflow-hidden">
+              <img
+                src="/assets/generated/upi-payment.dim_400x400.png"
+                alt="UPI QR Code"
+                className="w-52 h-52 object-cover"
+              />
+            </div>
+
+            {/* UPI ID */}
+            <div className="w-full bg-[oklch(0.16_0.01_240)] border border-gold/30 rounded-lg px-4 py-3 flex items-center justify-between gap-3">
+              <div>
+                <p className="font-body text-xs text-muted-foreground uppercase tracking-widest mb-0.5">
+                  UPI ID
+                </p>
+                <p className="font-display text-gold font-bold tracking-wide text-sm">
+                  {upiId}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="font-display text-xs font-bold tracking-widest px-3 py-1.5 rounded-full border border-gold text-gold hover:bg-gold hover:text-background transition-all duration-200"
+              >
+                {copied ? "COPIED!" : "COPY"}
+              </button>
+            </div>
+
+            {/* Pay via App button */}
+            <a
+              href={upiLink}
+              className="w-full font-display text-sm font-bold tracking-widest text-center py-3 rounded-full bg-gold text-background hover:shadow-gold-lg transition-all duration-300 hover:scale-[1.02]"
+            >
+              PAY VIA UPI APP
+            </a>
+
+            <p className="font-body text-xs text-muted-foreground text-center">
+              Works with PhonePe, GPay, Paytm &amp; all UPI apps
+            </p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 }

@@ -2,11 +2,11 @@ import Array "mo:core/Array";
 import Text "mo:core/Text";
 import Time "mo:core/Time";
 import List "mo:core/List";
-import Migration "migration";
+
 import Nat "mo:core/Nat";
 import Iter "mo:core/Iter";
 
-(with migration = Migration.run)
+
 actor {
   type CarBrand = {
     name : Text;
